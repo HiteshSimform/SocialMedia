@@ -4,7 +4,31 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from alembic import context
-from db.base import Base 
+from db.base import Base
+
+
+import os
+import sys
+from dotenv import load_dotenv
+
+load_dotenv()
+
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
+from db.base import Base
+from core.config import settings
+from models import (
+    base,
+    feed,
+    follow,
+    hashtag,
+    interaction,
+    notification,
+    post,
+    report,
+    role,
+    story,
+    user,
+)
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -14,6 +38,8 @@ config = context.config
 # This line sets up loggers basically.
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
+
+config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
 
 # add your model's MetaData object here
 # for 'autogenerate' support
@@ -66,9 +92,7 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()

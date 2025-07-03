@@ -1,10 +1,10 @@
-
 import logging
 import os
 from core.config import settings
 
 LOG_FORMAT = "[%(asctime)s] [%(levelname)s] %(name)s - %(message)s"
 LOG_FILE = "logs/app.log"
+
 
 def setup_logger():
     os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
