@@ -8,6 +8,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 # Initialize logger (optional)
 logger = logging.getLogger("password_hashing")
 
+
 def hash_password(password: str) -> str:
     """
     Hash a plaintext password using bcrypt.
@@ -18,15 +19,16 @@ def hash_password(password: str) -> str:
     try:
         # Hash the password with bcrypt
         hashed_password = pwd_context.hash(password)
-        
+
         # Log the password hashing event (avoid logging the actual password)
         logger.info("Password successfully hashed.")
-        
+
         return hashed_password
     except Exception as e:
         # Log error if hashing fails
         logger.error(f"Error occurred while hashing password: {e}")
         raise ValueError("Error occurred while hashing the password.")
+
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """
@@ -39,15 +41,14 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     try:
         # Verify the password with bcrypt
         is_valid = pwd_context.verify(plain_password, hashed_password)
-        
+
         if is_valid:
             logger.info("Password verification successful.")
         else:
             logger.warning("Password verification failed.")
-        
+
         return is_valid
     except Exception as e:
         # Log error if verification fails
         logger.error(f"Error occurred while verifying password: {e}")
         raise ValueError("Error occurred while verifying the password.")
-
